@@ -36,6 +36,10 @@ namespace Pacman
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             loadingManager = new LoadingManager(Content);
 
+            _graphics.PreferredBackBufferHeight = loadingManager.tileTexture.Height * loadingManager.tileMap.GetLength(1);
+            _graphics.PreferredBackBufferWidth = loadingManager.tileTexture.Width * loadingManager.tileMap.GetLength(0);
+            _graphics.ApplyChanges();
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -51,6 +55,8 @@ namespace Pacman
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            _spriteBatch.Begin();
+
             for (int rows = 0; rows < loadingManager.tileMap.GetLength(0); rows++)
             {
                 for (int cols = 0; cols < loadingManager.tileMap.GetLength(1); cols++)
@@ -58,6 +64,8 @@ namespace Pacman
                     loadingManager.tileMap[rows, cols].Draw(_spriteBatch);
                 }
             }
+
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }

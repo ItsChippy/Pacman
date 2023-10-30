@@ -39,7 +39,7 @@ namespace Pacman
                     switch (stringsFromTextFile[col][row])
                     {
                         case 'X':
-                            tileMap[row, col] = new Tile(tileTexture, new Vector2(tileTexture.Width * row, tileTexture.Height * col), Color.Aqua);
+                            tileMap[row, col] = new Tile(tileTexture, new Vector2(tileTexture.Width * row, tileTexture.Height * col), Color.Blue);
                             break;
 
                         case '-':
@@ -50,24 +50,8 @@ namespace Pacman
                             tileMap[row, col] = new Tile(tileTexture, new Vector2(tileTexture.Width * row, tileTexture.Height * col), Color.Black);
                             break;
 
-                        case 'R':
-                            tileMap[row, col] = new Tile(tileTexture, new Vector2(tileTexture.Width * row, tileTexture.Height * col), Color.Black);
-                            break;
-
                         case 'U':
                             tileMap[row, col] = new Tile(tileTexture, new Vector2(tileTexture.Width * row, tileTexture.Height * col), Color.Green); 
-                            break;
-
-                        case 'T':
-                            tileMap[row, col] = new Tile(tileTexture, new Vector2(tileTexture.Width * row, tileTexture.Height * col), Color.Turquoise);
-                            break;
-
-                        case 'P':
-                            tileMap[row, col] = new Tile(tileTexture, new Vector2(tileTexture.Width * row, tileTexture.Height * col), Color.Pink);
-                            break;
-
-                        case 'O':
-                            tileMap[row, col] = new Tile(tileTexture, new Vector2(tileTexture.Width * row, tileTexture.Height * col), Color.Orange);
                             break;
 
                         case 'S':
