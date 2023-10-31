@@ -34,10 +34,11 @@ namespace Pacman
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            loadingManager = new LoadingManager(Content);
+            loadingManager = new LoadingManager(this);
 
-            _graphics.PreferredBackBufferHeight = loadingManager.tileTexture.Height * loadingManager.tileMap.GetLength(1);
-            _graphics.PreferredBackBufferWidth = loadingManager.tileTexture.Width * loadingManager.tileMap.GetLength(0);
+            _graphics.PreferredBackBufferHeight = loadingManager.level.tileTexture.Height * Level.tileMap.GetLength(1);
+            _graphics.PreferredBackBufferWidth = loadingManager.level.tileTexture.Width * Level.tileMap.GetLength(0);
+            
             _graphics.ApplyChanges();
 
         }
@@ -46,7 +47,9 @@ namespace Pacman
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            var keys = Keyboard.GetState();
 
+            PlayerController.Instance.Update(keys, gameTime);
 
             base.Update(gameTime);
         }
@@ -57,13 +60,8 @@ namespace Pacman
 
             _spriteBatch.Begin();
 
-            for (int rows = 0; rows < loadingManager.tileMap.GetLength(0); rows++)
-            {
-                for (int cols = 0; cols < loadingManager.tileMap.GetLength(1); cols++)
-                {
-                    loadingManager.tileMap[rows, cols].Draw(_spriteBatch);
-                }
-            }
+            loadingManager.level.Draw(_spriteBatch);
+            PlayerController.Instance.Draw(_spriteBatch);
 
             _spriteBatch.End();
 

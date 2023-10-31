@@ -13,53 +13,18 @@ namespace Pacman
 {
     public class LoadingManager
     {
-        public List<string> stringsFromTextFile;        
-        public Tile[,] tileMap;
-        public Texture2D tileTexture;
-        
+        Game game;
+        public Level level { get; set; }
+        public List<string> stringsFromTextFile { get; private set; }   
 
-        public LoadingManager(ContentManager content)
+        public LoadingManager(Game game)
         {
-            tileTexture = content.Load<Texture2D>(@"tile");
+            this.game = game;
 
             FillListFromTextFile();
-            LoadMap();
-        }
-
-        public void LoadMap()
-        {
-            int numOfRows = stringsFromTextFile[0].Length;
-            int numOfCols = stringsFromTextFile.Count;
-            tileMap = new Tile[numOfRows, numOfCols];
-
-            for (int row = 0; row < numOfRows; row++) 
-            {
-                for (int col = 0; col < numOfCols; col++) 
-                {
-                    switch (stringsFromTextFile[col][row])
-                    {
-                        case 'X':
-                            tileMap[row, col] = new Tile(tileTexture, new Vector2(tileTexture.Width * row, tileTexture.Height * col), Color.Blue);
-                            break;
-
-                        case '-':
-                            tileMap[row, col] = new Tile(tileTexture, new Vector2(tileTexture.Width * row, tileTexture.Height * col), Color.Black);
-                            break;
-
-                        case '=':
-                            tileMap[row, col] = new Tile(tileTexture, new Vector2(tileTexture.Width * row, tileTexture.Height * col), Color.Black);
-                            break;
-
-                        case 'U':
-                            tileMap[row, col] = new Tile(tileTexture, new Vector2(tileTexture.Width * row, tileTexture.Height * col), Color.Green); 
-                            break;
-
-                        case 'S':
-                            tileMap[row, col] = new Tile(tileTexture, new Vector2(tileTexture.Width * row, tileTexture.Height * col), Color.Yellow);
-                            break;
-                    }
-                }
-            }
+            level = new Level(game, @"tile", stringsFromTextFile);
+            var player = new Player(game.Content.Load<Texture2D>(@"player"), level.playerSpawnPosition);
+            new PlayerController(player);
         }
 
         private void FillListFromTextFile()
