@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -16,10 +17,13 @@ namespace Pacman
         Vector2 direction;
         Vector2 destination;
 
+        Animation animation;
         Color color;
 
-        public Player(Texture2D texture, Vector2 position) : base(texture, position)
+        public Player(Texture2D texture, Vector2 position, ContentManager content) : base(texture, position)
         {
+            Texture2D playerSheet = content.Load<Texture2D>(@"playersheet");
+            animation = new Animation(playerSheet, 32, 32, 4);
             color = Color.White;
         }
 
@@ -31,7 +35,8 @@ namespace Pacman
             }
             position += direction * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
             UpdateRectanglePos();
-
+            animation.UpdateAnimation(gameTime);
+            animation.UpdateAnimationPosition(position);
             if (Vector2.Distance(position, destination) < 1)
             {
                 position = destination;
@@ -42,8 +47,9 @@ namespace Pacman
         public void Draw(SpriteBatch spriteBatch, SpriteEffects effect, float rotation)
         {
             Vector2 origin = new Vector2(texture.Width / 2, texture.Height / 2);
-            spriteBatch.Draw(texture, position + origin, null, color, rotation, origin, 1f, effect, 0f);
+            animation.Draw(spriteBatch, 1f, effect, color, rotation, origin);
         }
+
 
         private Vector2 GetNewDestination(Vector2 direction)
         {

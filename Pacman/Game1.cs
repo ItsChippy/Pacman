@@ -17,6 +17,7 @@ namespace Pacman
         private SpriteBatch _spriteBatch;
 
         public LoadingManager loadingManager;
+        GameState currentState;
 
         //player score
         int lives;
@@ -41,9 +42,12 @@ namespace Pacman
             loadingManager = new LoadingManager(this);
 
             _graphics.PreferredBackBufferHeight = loadingManager.level.tileTexture.Height * Level.tileMap.GetLength(1);
-            _graphics.PreferredBackBufferWidth = loadingManager.level.tileTexture.Width * Level.tileMap.GetLength(0);
-            
+            _graphics.PreferredBackBufferWidth = loadingManager.level.tileTexture.Width * Level.tileMap.GetLength(0);          
             _graphics.ApplyChanges();
+
+            currentState = GameState.Playing;
+            lives = 3;
+            points = 0;
 
         }
 
@@ -53,8 +57,24 @@ namespace Pacman
                 Exit();
             var keys = Keyboard.GetState();
 
-            PlayerController.Instance.Update(keys, gameTime);
-            loadingManager.level.Update();
+            switch(currentState)
+            {
+                case GameState.StartMenu:
+
+                    break;
+
+                case GameState.Playing:
+                    GameStateMachine.Instance.PlayingUpdate(keys, gameTime, this);
+                    break;
+
+                case GameState.EatGhosts:
+
+                    break;
+
+                case GameState.GameOver:
+
+                    break;
+            }
 
             base.Update(gameTime);
         }
@@ -65,8 +85,25 @@ namespace Pacman
 
             _spriteBatch.Begin();
 
-            loadingManager.level.Draw(_spriteBatch);
-            PlayerController.Instance.Draw(_spriteBatch);
+            switch (currentState)
+            {
+                case GameState.StartMenu:
+
+                    break;
+
+                case GameState.Playing:
+                    GameStateMachine.Instance.PlayingDraw(_spriteBatch, this);
+                    break;
+
+                case GameState.EatGhosts:
+
+                    break;
+
+                case GameState.GameOver:
+
+                    break;
+            }
+
 
             _spriteBatch.End();
 

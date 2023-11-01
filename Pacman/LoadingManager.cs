@@ -20,11 +20,10 @@ namespace Pacman
         public LoadingManager(Game game)
         {
             this.game = game;
-
             FillListFromTextFile();
             level = new Level(game, @"tile", stringsFromTextFile);
             level.LoadLevel();
-            var player = new Player(game.Content.Load<Texture2D>(@"player"), level.playerSpawnPosition);
+            var player = new Player(game.Content.Load<Texture2D>(@"player"), level.playerSpawnPosition, game.Content);
             new PlayerController(player);
             level.GetPlayer(player);
         }
