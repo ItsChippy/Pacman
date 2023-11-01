@@ -6,6 +6,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Pacman
 {
@@ -15,21 +16,29 @@ namespace Pacman
         public static Tile[,] tileMap { get; private set; }
         public Vector2 playerSpawnPosition { get; private set; }
 
+        Game game;
+        Player player;
+
         List<string> stringsFromTextFile;
+        int numOfRows;
+        int numOfCols;
+        public List<SmallPill> smallPills {  get; private set; }
 
         public Level(Game game, string pathToTexture, List<string> stringsFromTextFile)
         {
+            this.game = game;
+            smallPills = new List<SmallPill>();
             tileTexture = game.Content.Load<Texture2D>(pathToTexture);
             this.stringsFromTextFile = stringsFromTextFile;
 
-            int numOfRows = stringsFromTextFile[0].Length;
-            int numOfCols = stringsFromTextFile.Count;
+            numOfRows = stringsFromTextFile[0].Length;
+            numOfCols = stringsFromTextFile.Count;
             tileMap = new Tile[numOfRows, numOfCols];
-            LoadLevel(numOfRows, numOfCols);
         }
 
-        private void LoadLevel(int numOfRows, int numOfCols)
+        public void LoadLevel()
         {
+            SmallPill currentPill;
             for (int row = 0; row < numOfRows; row++)
             {
                 for (int col = 0; col < numOfCols; col++)
@@ -44,6 +53,8 @@ namespace Pacman
                         case '-':
                             tileMap[row, col] = new Tile(tileTexture, new Vector2(tileTexture.Width * row, tileTexture.Height * col), Color.Black);
                             tileMap[row, col].type = TileType.SmallPill;
+                            currentPill = new SmallPill(game.Content.Load<Texture2D>(@"smallpill"), game.Content.Load<SoundEffect>(@"eatpill"), new Vector2(tileTexture.Width * row, tileTexture.Height * col));
+                            smallPills.Add(currentPill);
                             break;
 
                         case '=':
@@ -65,6 +76,14 @@ namespace Pacman
             }
         }
 
+        public void Update()
+        {
+            for (int index = 0; index < smallPills.Count; index++)
+            {
+                smallPills[index].Update(player);
+            }
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             for (int rows = 0; rows < tileMap.GetLength(0); rows++)
@@ -74,6 +93,11 @@ namespace Pacman
                     tileMap[rows, cols].Draw(spriteBatch);
                 }
             }
+
+            for (int index = 0; index < smallPills.Count; index++)
+            {
+                smallPills[index].Draw(spriteBatch);
+            }
         }
 
         public static TileType CheckTileType(Vector2 tilePosition)
@@ -81,6 +105,11 @@ namespace Pacman
             int tileWidth = tileMap[0, 0].texture.Width;
             int tileHeight = tileMap[0, 0].texture.Height;
             return tileMap[(int)tilePosition.X / tileWidth, (int)tilePosition.Y / tileHeight].type;
+        }
+
+        public void GetPlayer(Player player)
+        {
+            this.player = player;
         }
     }
 }

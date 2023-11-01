@@ -11,8 +11,6 @@ namespace Pacman
     public class Player : BaseGameObject
     {
         const float speed = 100f;
-        int lives;
-        int points;
 
         public bool isMoving { get; private set; } = false;
         Vector2 direction;
@@ -22,8 +20,6 @@ namespace Pacman
 
         public Player(Texture2D texture, Vector2 position) : base(texture, position)
         {
-            lives = 3;
-            points = 0;
             color = Color.White;
         }
 

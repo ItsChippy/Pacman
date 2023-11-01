@@ -18,6 +18,10 @@ namespace Pacman
 
         public LoadingManager loadingManager;
 
+        //player score
+        int lives;
+        static int points;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -50,6 +54,7 @@ namespace Pacman
             var keys = Keyboard.GetState();
 
             PlayerController.Instance.Update(keys, gameTime);
+            loadingManager.level.Update();
 
             base.Update(gameTime);
         }
@@ -66,6 +71,11 @@ namespace Pacman
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        public static void AddPoints(int pointsToAdd)
+        {
+            points += pointsToAdd;
         }
     }
 }

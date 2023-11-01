@@ -22,7 +22,7 @@ namespace Pacman
         float rotation;
 
         public static PlayerController Instance { get; private set; }
-        private readonly Player player;
+        public readonly Player player;
 
         public PlayerController(Player player)
         {

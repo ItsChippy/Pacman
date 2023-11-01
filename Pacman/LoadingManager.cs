@@ -23,8 +23,10 @@ namespace Pacman
 
             FillListFromTextFile();
             level = new Level(game, @"tile", stringsFromTextFile);
+            level.LoadLevel();
             var player = new Player(game.Content.Load<Texture2D>(@"player"), level.playerSpawnPosition);
             new PlayerController(player);
+            level.GetPlayer(player);
         }
 
         private void FillListFromTextFile()
