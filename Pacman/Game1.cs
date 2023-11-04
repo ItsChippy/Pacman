@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Diagnostics;
 
 namespace Pacman
 {
@@ -75,7 +76,6 @@ namespace Pacman
 
                     break;
             }
-
             base.Update(gameTime);
         }
 
@@ -113,6 +113,11 @@ namespace Pacman
         public static void AddPoints(int pointsToAdd)
         {
             points += pointsToAdd;
+        }
+
+        public static void RemovePoints(int pointsToRemove) 
+        {
+            points -= pointsToRemove;
         }
     }
 }

@@ -31,6 +31,7 @@ namespace Pacman
         public void PlayingUpdate(KeyboardState keys, GameTime gameTime, Game1 game1)
         {
             PlayerController.Instance.Update(keys, gameTime);
+            EnemyController.Instance.Update(gameTime);
             game1.loadingManager.level.Update();
         }
 
@@ -48,6 +49,7 @@ namespace Pacman
         {
             game1.loadingManager.level.Draw(spriteBatch);
             PlayerController.Instance.Draw(spriteBatch);
+            EnemyController.Instance.Draw(spriteBatch);
         }
 
         public void GameOverDraw() 

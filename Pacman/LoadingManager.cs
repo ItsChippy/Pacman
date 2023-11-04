@@ -28,6 +28,9 @@ namespace Pacman
             var player = new Player(game.Content.Load<Texture2D>(@"player"), level.playerSpawnPosition, game.Content); //sets up the player and the player controller
             new PlayerController(player);
             level.GetPlayer(player);
+
+            var redGhost = new Enemy(game.Content.Load<Texture2D>(@"redghostsheet"), level.redGhostSpawnPosition);
+            new EnemyController(redGhost, player);
         }
 
         private void FillListFromTextFile()

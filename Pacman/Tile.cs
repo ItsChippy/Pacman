@@ -13,7 +13,7 @@ namespace Pacman
         Empty,
         Wall,
         SmallPill,
-        BigPill
+        EnemyGate
     }
     public class Tile : BaseGameObject
     {

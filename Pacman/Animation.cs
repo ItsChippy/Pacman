@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Pacman
 {
@@ -17,12 +18,14 @@ namespace Pacman
         int currentFrame;
         int totalFrames;
         int spriteWidth;
+        int startingPosX;
 
         public Animation(Texture2D spriteSheet, int spriteWidth, int spriteHeight, int totalFrames, double animationSpeed = 100, int startingPosX = 0, int startingPosY = 0)
         {
             this.spriteSheet = spriteSheet;
             this.totalFrames = totalFrames;
             this.spriteWidth = spriteWidth;
+            this.startingPosX = startingPosX;
             frameTimer = animationSpeed;
             frameInterval = animationSpeed;
             currentSpriteRect = new Rectangle(startingPosX, startingPosY, spriteWidth, spriteHeight);
@@ -47,7 +50,8 @@ namespace Pacman
                 {
                     currentFrame = 0;
                 }
-                currentSpriteRect.X = currentFrame * spriteWidth;
+                currentSpriteRect.X = (currentFrame * spriteWidth) + startingPosX;
+                Debug.WriteLine($"Sprite rect X = {currentSpriteRect.X} Width: {spriteWidth} Starting pos{startingPosX}");
             }
         }
 

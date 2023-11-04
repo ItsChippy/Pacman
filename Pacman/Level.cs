@@ -15,6 +15,7 @@ namespace Pacman
         public Texture2D tileTexture { get; private set; }
         public static Tile[,] tileMap { get; private set; }
         public Vector2 playerSpawnPosition { get; private set; }
+        public Vector2 redGhostSpawnPosition { get; private set; }
 
         Game game;
         Player player;
@@ -64,12 +65,17 @@ namespace Pacman
 
                         case 'U':
                             tileMap[row, col] = new Tile(tileTexture, new Vector2(tileTexture.Width * row, tileTexture.Height * col), Color.Green);
-                            tileMap[row, col].type = TileType.Empty;
+                            tileMap[row, col].type = TileType.EnemyGate;
                             break;
 
                         case 'S':
                             tileMap[row, col] = new Tile(tileTexture, new Vector2(tileTexture.Width * row, tileTexture.Height * col), Color.Black);
                             playerSpawnPosition = new Vector2(tileTexture.Width * row, tileTexture.Height * col);
+                            break;
+
+                        case 'R':
+                            tileMap[row, col] = new Tile(tileTexture, new Vector2(tileTexture.Width * row, tileTexture.Height * col), Color.Black);
+                            redGhostSpawnPosition = new Vector2(tileTexture.Width * row, tileTexture.Height * col);
                             break;
                     }
                 }

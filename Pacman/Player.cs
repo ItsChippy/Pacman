@@ -11,7 +11,7 @@ namespace Pacman
 {
     public class Player : BaseGameObject
     {
-        const float speed = 100f;
+        const float speed = 120f;
 
         public bool isMoving { get; private set; } = false;
         Vector2 direction;
