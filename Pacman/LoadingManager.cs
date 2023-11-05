@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Media;
 
 namespace Pacman
 {
@@ -15,10 +16,18 @@ namespace Pacman
     {
         Game game;
         public Level level { get; set; }
-        public List<string> stringsFromTextFile { get; private set; }   
+        public List<string> stringsFromTextFile { get; private set; }
+
+        public Song zombieModeSong;
+        public SpriteFont zombieFont { get; private set; }
 
         public LoadingManager(Game game)
         {
+            zombieModeSong = game.Content.Load<Song>("zombiemode");
+            MediaPlayer.Volume = 0.3f;
+            MediaPlayer.IsRepeating = true;
+            zombieFont = game.Content.Load<SpriteFont>("zombiemodefont");
+
             this.game = game;
             FillListFromTextFile();
             
@@ -32,7 +41,13 @@ namespace Pacman
             var redGhost = new Enemy(game.Content.Load<Texture2D>(@"redghostsheet"), level.ghostSpawnPosition);
             var blueGhost = new Enemy(game.Content.Load<Texture2D>(@"blueghostsheet"), level.ghostSpawnPosition);
             var pinkGhost = new Enemy(game.Content.Load<Texture2D>(@"pinkghostsheet"), level.ghostSpawnPosition);
-            new EnemyController(redGhost, blueGhost, pinkGhost, player);
+
+            Enemy[] zombieGhostArray = new Enemy[15];
+            for (int i = 0; i < zombieGhostArray.Length; i++)
+            {
+                zombieGhostArray[i] = new Enemy(game.Content.Load<Texture2D>(@"redghostsheet"), level.ghostSpawnPosition);
+            }
+            new EnemyController(zombieGhostArray, redGhost, blueGhost, pinkGhost, player);
         }
 
         private void FillListFromTextFile()

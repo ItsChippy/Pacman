@@ -10,7 +10,6 @@ namespace Pacman
     {
         StartMenu,
         Playing,
-        EatGhosts,
         GameOver
     }
     public class Game1 : Game
@@ -22,7 +21,7 @@ namespace Pacman
         internal GameState currentState;
 
         //player score
-        public static int lives { get; private set; }
+        public static int lives;
         static int points;
 
         public Game1()
@@ -47,7 +46,7 @@ namespace Pacman
             _graphics.PreferredBackBufferWidth = loadingManager.level.tileTexture.Width * Level.tileMap.GetLength(0);          
             _graphics.ApplyChanges();
 
-            currentState = GameState.Playing;
+            currentState = GameState.StartMenu;
             lives = 3;
             points = 0;
 
@@ -62,19 +61,15 @@ namespace Pacman
             switch(currentState)
             {
                 case GameState.StartMenu:
-
+                    GameStateMachine.Instance.StartMenuUpdate(keys, this);
                     break;
 
                 case GameState.Playing:
                     GameStateMachine.Instance.PlayingUpdate(keys, gameTime, this);
                     break;
 
-                case GameState.EatGhosts:
-
-                    break;
-
                 case GameState.GameOver:
-
+                    GameStateMachine.Instance.GameOverUpdate(keys, this);
                     break;
             }
             base.Update(gameTime);
@@ -82,26 +77,22 @@ namespace Pacman
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             _spriteBatch.Begin();
 
             switch (currentState)
             {
                 case GameState.StartMenu:
-
+                    GameStateMachine.Instance.StartMenuDraw();
                     break;
 
                 case GameState.Playing:
                     GameStateMachine.Instance.PlayingDraw(_spriteBatch, this);
                     break;
 
-                case GameState.EatGhosts:
-
-                    break;
-
                 case GameState.GameOver:
-
+                    GameStateMachine.Instance.GameOverDraw(_spriteBatch, this);
                     break;
             }
 
@@ -121,10 +112,9 @@ namespace Pacman
             points -= pointsToRemove;
         }
 
-        public static void RemoveLife()
+        public void Restart()
         {
-            lives -= 1;  
+            LoadContent();
         }
-
     }
 }

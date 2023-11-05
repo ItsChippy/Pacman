@@ -31,6 +31,13 @@
 /processorParam:Quality=Best
 /build:eatpill.wav
 
+#begin File.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:File.spritefont;zombiemodefont.spritefont
+
 #begin pinkghostsheet.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -102,4 +109,10 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:tile.png
+
+#begin zombiemode.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:zombiemode.wav
 

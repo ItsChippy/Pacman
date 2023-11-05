@@ -12,20 +12,21 @@ namespace Pacman
     public sealed class EnemyController
     {
 
-
         public static EnemyController Instance { get; private set; }
         
         private readonly Enemy redGhost;
         private readonly Enemy blueGhost;
         private readonly Enemy pinkGhost;
+        private readonly Enemy[] zombieGhosts;
         private readonly Player player;
 
-        public EnemyController(Enemy redGhost, Enemy blueGhost, Enemy pinkGhost, Player player)
+        public EnemyController(Enemy[] zombieGhosts, Enemy redGhost, Enemy blueGhost, Enemy pinkGhost, Player player)
         {
             this.redGhost = redGhost;
             this.blueGhost = blueGhost;
             this.pinkGhost = pinkGhost;
             this.player = player;
+            this.zombieGhosts = zombieGhosts;
             Instance = this;
         }
 
@@ -36,11 +37,27 @@ namespace Pacman
             pinkGhost.Update(player, gameTime);
         }
 
+        public void UpdateZombies(GameTime gameTime)
+        {
+            for (int i = 0; i < zombieGhosts.Length; i++) 
+            {
+                zombieGhosts[i].Update(player, gameTime);
+            }
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
-            redGhost.Draw(spriteBatch);
-            blueGhost.Draw(spriteBatch);
-            pinkGhost.Draw(spriteBatch);
+            redGhost.Draw(spriteBatch, Color.White);
+            blueGhost.Draw(spriteBatch, Color.White);
+            pinkGhost.Draw(spriteBatch, Color.White);
+        }
+
+        public void DrawZombies(SpriteBatch spriteBatch) 
+        {
+            for (int i = 0; i < zombieGhosts.Length; i++)
+            {
+                zombieGhosts[i].Draw(spriteBatch, Color.LightGreen);
+            }
         }
     }
 }

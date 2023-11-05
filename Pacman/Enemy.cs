@@ -12,8 +12,9 @@ namespace Pacman
 {
     public class Enemy : BaseGhost
     {
-        float collisionTimer;
-        const float eventDelay = 3f;
+
+         static float collisionTimer;
+         const float collisionDelay = 3f;
 
         Animation leftAnimation;
         Animation rightAnimation;
@@ -36,33 +37,33 @@ namespace Pacman
             base.Move(gameTime);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, Color color)
         {
             switch (currentDirection) 
             {
                 case EnemyDirection.Left:
-                    leftAnimation.Draw(spriteBatch, 1f, SpriteEffects.None, Color.White, 0f, Vector2.Zero);
+                    leftAnimation.Draw(spriteBatch, 1f, SpriteEffects.None, color, 0f, Vector2.Zero);
                     break;
 
                 case EnemyDirection.Right:
-                    rightAnimation.Draw(spriteBatch, 1f, SpriteEffects.None, Color.White, 0f, Vector2.Zero);
+                    rightAnimation.Draw(spriteBatch, 1f, SpriteEffects.None, color, 0f, Vector2.Zero);
                     break;
 
                 case EnemyDirection.Up:
-                    upAnimation.Draw(spriteBatch, 1f, SpriteEffects.None, Color.White, 0f, Vector2.Zero);
+                    upAnimation.Draw(spriteBatch, 1f, SpriteEffects.None, color, 0f, Vector2.Zero);
                     break;
 
                 case EnemyDirection.Down:
-                    downAnimation.Draw(spriteBatch, 1f, SpriteEffects.None, Color.White, 0f, Vector2.Zero);
+                    downAnimation.Draw(spriteBatch, 1f, SpriteEffects.None, color, 0f, Vector2.Zero);
                     break;
             }
         }
 
-        private void PlayerCollision(Player player, GameTime deltaTime)
+        public void PlayerCollision(Player player, GameTime deltaTime)
         {
             if (rect.Intersects(player.rect) && !player.isHit)
             {
-                Game1.RemoveLife();
+                Game1.lives--;
                 Game1.RemovePoints(10);
                 player.isHit = true;
             }
@@ -74,7 +75,7 @@ namespace Pacman
             if (collisionTimer <= 0)
             {
                 player.isHit = false;
-                collisionTimer = eventDelay;
+                collisionTimer = collisionDelay;
             }
             Debug.WriteLine($"Timer: {collisionTimer} lives: {Game1.lives}");
         }
