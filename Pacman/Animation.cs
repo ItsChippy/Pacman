@@ -51,7 +51,6 @@ namespace Pacman
                     currentFrame = 0;
                 }
                 currentSpriteRect.X = (currentFrame * spriteWidth) + startingPosX;
-                Debug.WriteLine($"Sprite rect X = {currentSpriteRect.X} Width: {spriteWidth} Starting pos{startingPosX}");
             }
         }
 

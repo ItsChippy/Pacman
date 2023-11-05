@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,14 +26,18 @@ namespace Pacman
         public Rectangle rect;
 
         protected EnemyDirection currentDirection;
-        Random randomDirection;
+        Random randomDirection; //randomizes direction (chooses between -1 and 1)
+        Random randomChosenDirection; //for the pathfinding to choose a random direction once a wall is hit
+        protected bool isMoving = false;
         protected Vector2 direction;
+        protected Vector2 destination;
 
         public BaseGhost(Texture2D texture, Vector2 position)
         {
             this.texture = texture;
             this.position = position;
             randomDirection = new Random();
+            randomChosenDirection = new Random();
             direction = new Vector2(GenerateRandomDirection(), 0); //randomizes starting direction to be left or right
             
             rect = new Rectangle((int)position.X, (int)position.Y, 32, 32);
@@ -40,10 +45,32 @@ namespace Pacman
 
         public virtual void Move(GameTime gameTime)
         {
-            if (Level.CheckTileType(GetNextTile(direction)) != TileType.Wall)
+            if (!isMoving)
+            {
+                destination = GetNextTile(direction);
+                isMoving = true;
+            }
+            if (Level.CheckTileType(destination) == TileType.Wall)
+            {
+                isMoving = false;
+                if (randomChosenDirection.Next(2) == 0)
+                {
+                    direction = new Vector2(GenerateRandomDirection(), 0);
+                }
+                else
+                {
+                    direction = new Vector2(0, GenerateRandomDirection());
+                }
+                UpdateEnemyDirectionEnum(direction);
+                return;
+            }
+            if (Vector2.Distance(position, destination) > 1)
             {
                 position += direction * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                return;
             }
+            position = destination;
+            isMoving = false;
         }
 
         protected void UpdateRectanglePos()
@@ -60,6 +87,26 @@ namespace Pacman
         private Vector2 GetNextTile(Vector2 direction)
         {
             return position + direction * 32;
+        }
+
+        private void UpdateEnemyDirectionEnum(Vector2 direction)
+        {
+            if (direction.X == -1)
+            {
+                currentDirection = EnemyDirection.Left;
+            }
+            else if (direction.X == 1)
+            {
+                currentDirection = EnemyDirection.Right;
+            }
+            else if (direction.Y == -1)
+            {
+                currentDirection = EnemyDirection.Up;
+            }
+            else if (direction.Y == 1)
+            {
+                currentDirection = EnemyDirection.Down;
+            }
         }
     }
 }

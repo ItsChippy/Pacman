@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
+using System.Windows.Forms.Automation;
 
 namespace Pacman
 {
@@ -18,10 +19,10 @@ namespace Pacman
         private SpriteBatch _spriteBatch;
 
         public LoadingManager loadingManager;
-        GameState currentState;
+        internal GameState currentState;
 
         //player score
-        int lives;
+        public static int lives { get; private set; }
         static int points;
 
         public Game1()
@@ -119,5 +120,11 @@ namespace Pacman
         {
             points -= pointsToRemove;
         }
+
+        public static void RemoveLife()
+        {
+            lives -= 1;  
+        }
+
     }
 }

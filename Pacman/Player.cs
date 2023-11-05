@@ -14,6 +14,7 @@ namespace Pacman
         const float speed = 120f;
 
         public bool isMoving { get; private set; } = false;
+        public bool isHit;
         Vector2 direction;
         Vector2 destination;
 
@@ -25,6 +26,7 @@ namespace Pacman
             Texture2D playerSheet = content.Load<Texture2D>(@"playersheet");
             animation = new Animation(playerSheet, 32, 32, 4);
             color = Color.White;
+            animation.position = position;
         }
 
         public void Move(GameTime gameTime)
@@ -41,6 +43,14 @@ namespace Pacman
             {
                 position = destination;
                 isMoving = false;
+            }
+            if (isHit)
+            {
+                color = Color.Red;
+            }
+            else if (!isHit)
+            {
+                color = Color.White;
             }
         }
 

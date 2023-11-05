@@ -30,6 +30,10 @@ namespace Pacman
 
         public void PlayingUpdate(KeyboardState keys, GameTime gameTime, Game1 game1)
         {
+            if (Game1.lives == 0)
+            {
+                game1.currentState = GameState.GameOver;
+            }
             PlayerController.Instance.Update(keys, gameTime);
             EnemyController.Instance.Update(gameTime);
             game1.loadingManager.level.Update();

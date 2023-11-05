@@ -15,7 +15,8 @@ namespace Pacman
         public Texture2D tileTexture { get; private set; }
         public static Tile[,] tileMap { get; private set; }
         public Vector2 playerSpawnPosition { get; private set; }
-        public Vector2 redGhostSpawnPosition { get; private set; }
+        public Vector2 ghostSpawnPosition { get; private set; }
+        public Vector2 blueGhostSpawnPosition { get; private set; }
 
         Game game;
         Player player;
@@ -75,7 +76,7 @@ namespace Pacman
 
                         case 'R':
                             tileMap[row, col] = new Tile(tileTexture, new Vector2(tileTexture.Width * row, tileTexture.Height * col), Color.Black);
-                            redGhostSpawnPosition = new Vector2(tileTexture.Width * row, tileTexture.Height * col);
+                            ghostSpawnPosition = new Vector2(tileTexture.Width * row, tileTexture.Height * col);
                             break;
                     }
                 }

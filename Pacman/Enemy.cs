@@ -12,8 +12,7 @@ namespace Pacman
 {
     public class Enemy : BaseGhost
     {
-
-        float timer;
+        float collisionTimer;
         const float eventDelay = 3f;
 
         Animation leftAnimation;
@@ -27,14 +26,13 @@ namespace Pacman
             leftAnimation = new Animation(texture, 32, 32, 2, 200, 64, 0);
             upAnimation = new Animation(texture, 32, 32, 2, 200, 128, 0);
             downAnimation = new Animation(texture, 32, 32, 2, 200, 192, 0);
-
-            timer = eventDelay;
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(Player player, GameTime gameTime)
         {
-            timer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             UpdateAnimations(gameTime);
+            UpdateRectanglePos();
+            PlayerCollision(player, gameTime);
             base.Move(gameTime);
         }
 
@@ -60,30 +58,51 @@ namespace Pacman
             }
         }
 
+        private void PlayerCollision(Player player, GameTime deltaTime)
+        {
+            if (rect.Intersects(player.rect) && !player.isHit)
+            {
+                Game1.RemoveLife();
+                Game1.RemovePoints(10);
+                player.isHit = true;
+            }
+
+            if (player.isHit)
+            {
+                collisionTimer -= (float)deltaTime.ElapsedGameTime.TotalSeconds;
+            }
+            if (collisionTimer <= 0)
+            {
+                player.isHit = false;
+                collisionTimer = eventDelay;
+            }
+            Debug.WriteLine($"Timer: {collisionTimer} lives: {Game1.lives}");
+        }
+
         private void UpdateAnimations(GameTime gameTime)
         {
             switch (currentDirection)
             {
                 case EnemyDirection.Left:
                     leftAnimation.UpdateAnimation(gameTime);
-                    leftAnimation.UpdateAnimationPosition(position);
                     break;
 
                 case EnemyDirection.Right:
                     rightAnimation.UpdateAnimation(gameTime);
-                    rightAnimation.UpdateAnimationPosition(position);
                     break;
 
                 case EnemyDirection.Up:
                     upAnimation.UpdateAnimation(gameTime);
-                    upAnimation.UpdateAnimationPosition(position);
                     break;
 
                 case EnemyDirection.Down:
                     downAnimation.UpdateAnimation(gameTime);
-                    downAnimation.UpdateAnimationPosition(position);
                     break;
             }
+            leftAnimation.UpdateAnimationPosition(position);
+            rightAnimation.UpdateAnimationPosition(position);
+            upAnimation.UpdateAnimationPosition(position);
+            downAnimation.UpdateAnimationPosition(position);
         }
     }
 }
