@@ -114,9 +114,21 @@ namespace Pacman
             return tileMap[(int)tilePosition.X / tileWidth, (int)tilePosition.Y / tileHeight].type;
         }
 
-        public void GetPlayer(Player player)
+        public void GetPlayer(Player player) //injects player into the level
         {
             this.player = player;
+        }
+
+        public bool CheckIfWin()
+        {
+            for (int index = 0; index < smallPills.Count; index++) 
+            {
+                if (!smallPills[index].isHit)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

@@ -14,13 +14,12 @@ namespace Pacman
 {
     public class LoadingManager
     {
-        Game game;
         public Level level { get; set; }
         public List<string> stringsFromTextFile { get; private set; }
 
         public Song zombieModeSong;
         public SpriteFont zombieFont { get; private set; }
-
+        public SpriteFont gameFont { get; private set; }
         public LoadingManager(Game game)
         {
             zombieModeSong = game.Content.Load<Song>("zombiemode");
@@ -28,7 +27,7 @@ namespace Pacman
             MediaPlayer.IsRepeating = true;
             zombieFont = game.Content.Load<SpriteFont>("zombiemodefont");
 
-            this.game = game;
+            gameFont = game.Content.Load<SpriteFont>("gamefont");
             FillListFromTextFile();
             
             level = new Level(game, @"tile", stringsFromTextFile); //loads the level
@@ -38,6 +37,7 @@ namespace Pacman
             new PlayerController(player);
             level.GetPlayer(player);
 
+            //instantiates all ghosts with the same Enemy class
             var redGhost = new Enemy(game.Content.Load<Texture2D>(@"redghostsheet"), level.ghostSpawnPosition);
             var blueGhost = new Enemy(game.Content.Load<Texture2D>(@"blueghostsheet"), level.ghostSpawnPosition);
             var pinkGhost = new Enemy(game.Content.Load<Texture2D>(@"pinkghostsheet"), level.ghostSpawnPosition);

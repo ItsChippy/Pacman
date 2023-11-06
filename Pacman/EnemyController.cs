@@ -11,9 +11,11 @@ namespace Pacman
 {
     public sealed class EnemyController
     {
-
         public static EnemyController Instance { get; private set; }
-        
+
+        public static float collisionTimer;
+        public const float collisionDelay = 3f;
+
         private readonly Enemy redGhost;
         private readonly Enemy blueGhost;
         private readonly Enemy pinkGhost;
@@ -45,6 +47,19 @@ namespace Pacman
             }
         }
 
+        public void UpdatePlayerCollision(GameTime gameTime)
+        {
+            if (player.isHit)
+            {
+                collisionTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            if (collisionTimer <= 0)
+            {
+                player.isHit = false;
+                collisionTimer = collisionDelay;
+            }
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             redGhost.Draw(spriteBatch, Color.White);
@@ -59,5 +74,7 @@ namespace Pacman
                 zombieGhosts[i].Draw(spriteBatch, Color.LightGreen);
             }
         }
+
+
     }
 }

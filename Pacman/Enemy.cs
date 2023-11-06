@@ -13,9 +13,6 @@ namespace Pacman
     public class Enemy : BaseGhost
     {
 
-         static float collisionTimer;
-         const float collisionDelay = 3f;
-
         Animation leftAnimation;
         Animation rightAnimation;
         Animation upAnimation;
@@ -33,7 +30,7 @@ namespace Pacman
         {
             UpdateAnimations(gameTime);
             UpdateRectanglePos();
-            PlayerCollision(player, gameTime);
+            PlayerCollision(player);
             base.Move(gameTime);
         }
 
@@ -59,7 +56,7 @@ namespace Pacman
             }
         }
 
-        public void PlayerCollision(Player player, GameTime deltaTime)
+        public void PlayerCollision(Player player)
         {
             if (rect.Intersects(player.rect) && !player.isHit)
             {
@@ -67,17 +64,6 @@ namespace Pacman
                 Game1.RemovePoints(10);
                 player.isHit = true;
             }
-
-            if (player.isHit)
-            {
-                collisionTimer -= (float)deltaTime.ElapsedGameTime.TotalSeconds;
-            }
-            if (collisionTimer <= 0)
-            {
-                player.isHit = false;
-                collisionTimer = collisionDelay;
-            }
-            Debug.WriteLine($"Timer: {collisionTimer} lives: {Game1.lives}");
         }
 
         private void UpdateAnimations(GameTime gameTime)

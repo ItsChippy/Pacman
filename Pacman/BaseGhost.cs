@@ -43,7 +43,7 @@ namespace Pacman
             rect = new Rectangle((int)position.X, (int)position.Y, 32, 32);
         }
 
-        public virtual void Move(GameTime gameTime)
+        public virtual void Move(GameTime gameTime) //basic movement algorithm, can be overwritten in derived class
         {
             if (!isMoving)
             {
@@ -73,7 +73,7 @@ namespace Pacman
             isMoving = false;
         }
 
-        protected void UpdateRectanglePos()
+        protected void UpdateRectanglePos() //updates hitbox with the moving object's position (if object is moving)
         {
             rect.X = (int)position.X;
             rect.Y = (int)position.Y;

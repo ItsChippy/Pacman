@@ -19,10 +19,11 @@ namespace Pacman
 
         public LoadingManager loadingManager;
         internal GameState currentState;
+        public Texture2D blackRectangle {  get; private set; }
 
         //player score
         public static int lives;
-        static int points;
+        public static int points {  get; private set; }
 
         public Game1()
         {
@@ -45,6 +46,9 @@ namespace Pacman
             _graphics.PreferredBackBufferHeight = loadingManager.level.tileTexture.Height * Level.tileMap.GetLength(1);
             _graphics.PreferredBackBufferWidth = loadingManager.level.tileTexture.Width * Level.tileMap.GetLength(0);          
             _graphics.ApplyChanges();
+
+            blackRectangle = new Texture2D(GraphicsDevice, 1, 1);
+            blackRectangle.SetData(new[] {Color.Black});
 
             currentState = GameState.StartMenu;
             lives = 3;
@@ -84,7 +88,7 @@ namespace Pacman
             switch (currentState)
             {
                 case GameState.StartMenu:
-                    GameStateMachine.Instance.StartMenuDraw();
+                    GameStateMachine.Instance.StartMenuDraw(_spriteBatch, this);
                     break;
 
                 case GameState.Playing:

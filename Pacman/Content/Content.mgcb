@@ -38,6 +38,13 @@
 /processorParam:TextureFormat=Compressed
 /build:File.spritefont;zombiemodefont.spritefont
 
+#begin gamefont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:gamefont.spritefont
+
 #begin pinkghostsheet.png
 /importer:TextureImporter
 /processor:TextureProcessor

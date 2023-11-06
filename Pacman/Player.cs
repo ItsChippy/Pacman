@@ -44,6 +44,10 @@ namespace Pacman
                 position = destination;
                 isMoving = false;
             }
+        }
+
+        public void Draw(SpriteBatch spriteBatch, SpriteEffects effect, float rotation)
+        {
             if (isHit)
             {
                 color = Color.Red;
@@ -52,10 +56,6 @@ namespace Pacman
             {
                 color = Color.White;
             }
-        }
-
-        public void Draw(SpriteBatch spriteBatch, SpriteEffects effect, float rotation)
-        {
             Vector2 origin = new Vector2(texture.Width / 2, texture.Height / 2);
             animation.Draw(spriteBatch, 1f, effect, color, rotation, origin);
         }
